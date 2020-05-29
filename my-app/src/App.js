@@ -1,44 +1,72 @@
-import React from 'react';
+import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import {Line} from 'react-chartjs-2';
 import './App.css';
+import RunnerCard from './components/RunnerCards/index'
+import ChartCard from './components/ChartCards/index'
+// https://github.com/jerairrest/react-chartjs-2/tree/master/example/src/components
 
-function App() {
-  const data = {
-    labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'],
-    datasets: [
-      {
-        label: 'Mis Kilometros corridos',
-        fill: false,
-        lineTension: 0.1,
-        backgroundColor: 'rgba(75,192,192,0.4)',
-        borderColor: 'rgba(75,192,192,1)',
-        borderCapStyle: 'butt',
-        borderDash: [],
-        borderDashOffset: 0.0,
-        borderJoinStyle: 'miter',
-        pointBorderColor: 'rgba(75,192,192,1)',
-        pointBackgroundColor: '#fff',
-        pointBorderWidth: 1,
-        pointHoverRadius: 5,
-        pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-        pointHoverBorderColor: 'rgba(220,220,220,1)',
-        pointHoverBorderWidth: 2,
-        pointRadius: 1,
-        pointHitRadius: 10,
-        data: [65, 59, 80, 81, 56, 55, 40]
+
+
+class App extends Component{
+  constructor(){
+    super();
+    this.state = {
+      runnersData:{},
+      selectedRunner:{},
+      runnerKey:''
+    }
+    this.handleRunnerClick = this.handleRunnerClick.bind(this)
+  }
+
+  hadleRunnerClick(event){
+    let runnerKey = event.target.dataset.runnerKey;
+    this.setState({runnerKey});
+    this.setState({selectedRunner: this.state.runnersData[runnerKey]})
+  }
+
+  componentDiMount(){
+    fetch('https://runtracks-a4c10.firebaseio.com/.json').then(
+      response =>{
+        response.json().then(
+          json =>{
+            this.setState({runnersData:json})
+          }          
+        )
       }
-    ]
-  };
-  return (
-    <div className="container">
-      <div className="row">
-        <div className="col-12">
-          <Line  data={data}/>
+    )
+  }
+
+  render(){
+    return (
+      <div className="container">
+        <div className="row">
+
+          {
+            Object.keys(this.state.runnersData).map( runner =>{
+              return <RunnerCard 
+              runnerName = {this.state.runnesData[runner].name}
+              key = {runner}
+              runner = {runner}
+              handleRunnerClick = {this.handleRunnerClick}
+              />
+            })
+            
+          }
+          <div className="row">
+            <div className="col-12">
+                {
+                  this.state.selectedRunner ? <ChartCard chartData = {this.state.selectedRunner}                    
+                    /> : 
+                    null
+                }                    
+            </div>
+          </div>       
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
+
 
 export default App;
