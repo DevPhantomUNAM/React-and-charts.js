@@ -13,8 +13,7 @@ class App extends Component{
     super();
     this.state = {
       runnersData:{},
-      selectedRunner:{},
-      runnerKey:''
+      runnerKey:""
     }
     this.handleRunnerClick = this.handleRunnerClick.bind(this)
   }

@@ -1,13 +1,12 @@
-import React, {Component } from 'react';
+import React, { Component } from 'react';
 
 export default class RunnerCard extends Component{
     constructor(props){
         super(props);
-
     }
     render(){
         return(
-            <div className="col-12 col-md-6">
+            <div className="col-12 col-md-4 mt-3">
                 <div className="card">
                     <div className="card-header">
                         {
@@ -22,7 +21,5 @@ export default class RunnerCard extends Component{
                 </div>
             </div>
         )
-            
-        
     }
 }

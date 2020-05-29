@@ -42,7 +42,6 @@ export default class ChartCard extends Component{
             ]
           };
 
-
         return(
             <div className="card">
                 <Line  data={data}/>
